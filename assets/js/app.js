@@ -3,6 +3,10 @@ const api = {
     baseurl: "http://api.openweathermap.org/data/2.5/"
 }
 
+let now = new Date();
+let date = document.querySelector(".location .date");
+date.innerText = dateFormatter(now);
+
 const searchBar = document.querySelector(".search-bar");
 searchBar.addEventListener("keypress", setQuery);
 
@@ -22,16 +26,68 @@ function getResults(query) {
 
 function displayResults(weather) {
     console.log(weather);
+    //location results
     let city = document.querySelector(".location .city");
     city.innerText = `${weather.name}, ${weather.sys.country}`;
 
-    //use date formatter instead of creating function
+   //date 
     let now = new Date();
-    date = document.querySelector(".location .date");
-    date.innerText = dateBuilder(now);
+    let date = document.querySelector(".location .date");
+    date.innerText = dateFormatter(now);
+
+    //temp
+    let currentTemp = document.querySelector(".current .temp");
+    let fixedNumber = Math.round(weather.main.temp)
+    currentTemp.innerHTML = `${fixedNumber}` + "<span>°F</span>";
+
+    //weather type
+    let weatherType = document.querySelector(".current .weather-type");
+    weatherType.innerText = weather.weather[0].description;
+
+    //high - low
+    let highLow = document.querySelector(".current .high-low");
+    let highVal = Math.round(weather.main.temp_max);
+    let lowVal = Math.round(weather.main.temp_min);
+    highLow.innerHTML = `${highVal} °F / ${lowVal} °F`;
 
 }
 
-function dateBuilder(d) {
+function dateFormatter(d) {
 
+    const months = {
+        0: 'January',
+        1: 'February',
+        2: 'March',
+        3: 'April',
+        4: 'May',
+        5: 'June',
+        6: 'July',
+        7: 'August',
+        8: 'September',
+        9: 'October',
+        10: 'November',
+        11: 'December'
+      };
+
+
+      const days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ];
+
+
+      const year = d.getFullYear();
+      const date = d.getDate();
+      const monthName = months[d.getMonth()];
+      const dayName = days[d.getDay()];
+
+      const formattedDate = `${dayName} ${monthName} ${date} ${year}`;
+
+      return formattedDate;
+      
 }
