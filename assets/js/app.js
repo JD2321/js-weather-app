@@ -1,15 +1,19 @@
+//weather API
 const api = {
     key: "bce30d2d548f76cdea1803e470cdefb1",
     baseurl: "http://api.openweathermap.org/data/2.5/"
 }
 
+// date creater
 let now = new Date();
 let date = document.querySelector(".location .date");
 date.innerText = dateFormatter(now);
 
+//grab search bar, add event listener
 const searchBar = document.querySelector(".search-bar");
 searchBar.addEventListener("keypress", setQuery);
 
+//check for enter press, run search
 function setQuery(e) {
     if (e.keyCode == 13) {
         getResults(searchBar.value);
@@ -17,6 +21,7 @@ function setQuery(e) {
     }
 };
 
+//query to openweather maps 
 function getResults(query) {
     fetch(`${api.baseurl}weather?q=${query}&units=imperial&APPID=${api.key}`)
         .then(weather => {
@@ -24,6 +29,7 @@ function getResults(query) {
         }).then(displayResults);
 }
 
+//edit html with results
 function displayResults(weather) {
     console.log(weather);
     //location results
@@ -52,6 +58,7 @@ function displayResults(weather) {
 
 }
 
+//format date
 function dateFormatter(d) {
 
     const months = {
@@ -91,3 +98,4 @@ function dateFormatter(d) {
       return formattedDate;
       
 }
+
